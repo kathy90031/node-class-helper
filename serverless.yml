@@ -8,6 +8,18 @@ plugins:
 provider:
   name: aws
   runtime: nodejs6.10
+  environment:
+      DYNAMODB_TABLE_STUDENT: ${self:service}-Student-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:*"
 
 functions:
   hello:
@@ -17,9 +29,27 @@ functions:
           method: get
           path: hello
   create:
-      handler: pets/create.create
+      handler: src/database/createStudent.create
       events:
         - http:
-            path: pets
+            path: student
             method: post
             cors: true
+resources:
+  Resources:
+    StudentTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain # Keeps around the DynamoDB resource when we redeploy/destroy
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE_STUDENT}
