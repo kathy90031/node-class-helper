@@ -16,3 +16,10 @@ functions:
       - http:
           method: get
           path: hello
+  create:
+      handler: pets/create.create
+      events:
+        - http:
+            path: pets
+            method: post
+            cors: true
