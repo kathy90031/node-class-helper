@@ -1,5 +1,5 @@
 'use strict';
-
+import { APIGatewayEvent, Callback, Context, Handler } from 'aws-lambda';
 const uuid = require('uuid');
 const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-dependencies
 
@@ -9,12 +9,12 @@ const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-depe
 // - AWS Documentation
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-module.exports.create = (event, context, callback) => {
+export const create: Handler = (event: APIGatewayEvent, context: Context, cb: Callback) => {
     const timestamp = new Date().getTime();
     const data = JSON.parse(event.body);
     if (typeof data.firstName !== 'string' || typeof data.lastName !== 'string') {
         console.error('Validation Failed');
-        callback(new Error('Couldn\'t create the pet item.'));
+        cb(new Error('Couldn\'t create the pet item.'));
         return;
     }
 
@@ -35,7 +35,7 @@ module.exports.create = (event, context, callback) => {
         // handle potential errors
         if (error) {
             console.error(error);
-            callback(new Error('Couldn\'t create the student.'));
+            cb(new Error('Couldn\'t create the student.'));
             return;
         }
 
@@ -44,6 +44,6 @@ module.exports.create = (event, context, callback) => {
             statusCode: 200,
             body: JSON.stringify(params.Item),
         };
-        callback(null, response);
+        cb(null, response);
     });
-};
+}

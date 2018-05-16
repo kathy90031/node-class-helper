@@ -22,13 +22,7 @@ provider:
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:*"
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          method: get
-          path: hello
-  create:
+  createStudent:
       handler: src/database/createStudent.create
       events:
         - http:
