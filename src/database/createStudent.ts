@@ -14,7 +14,7 @@ export const create: Handler = (event: APIGatewayEvent, context: Context, cb: Ca
     const data = JSON.parse(event.body);
     if (typeof data.firstName !== 'string' || typeof data.lastName !== 'string') {
         console.error('Validation Failed');
-        cb(new Error('Couldn\'t create the pet item.'));
+        cb(new Error('Couldn\'t create the student.'));
         return;
     }
 

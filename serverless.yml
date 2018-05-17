@@ -36,7 +36,27 @@ functions:
             path: student
             method: get
             cors: true
-
+  getStudent:
+      handler: src/database/getStudent.get
+      events:
+        - http:
+            path: student/{id}
+            method: get
+            cors: true
+  updateStudent:
+      handler: src/database/updateStudent.update
+      events:
+        - http:
+            path: student/{id}
+            method: put
+            cors: true
+  deleteStudent:
+      handler: src/database/deleteStudent.deleteStudent
+      events:
+        - http:
+            path: student/{id}
+            method: delete
+            cors: true
 resources:
   Resources:
     StudentTable:
