@@ -11,6 +11,7 @@ provider:
   environment:
       DYNAMODB_TABLE_STUDENT: ${self:service}-Student-${opt:stage, self:provider.stage}
       DYNAMODB_TABLE_TEACHER: ${self:service}-Teacher-${opt:stage, self:provider.stage}
+      KINESIS-STREAM: kinesis-test
   iamRoleStatements:
     - Effect: Allow
       Action:

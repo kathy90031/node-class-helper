@@ -11,7 +11,7 @@ const AWS = require('aws-sdk'); // eslint-disable-line import/no-extraneous-depe
 // - AWS Documentation
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-const createKinesisRec = new CreateKinesisRecord('kinesis-test');
+const createKinesisRec = new CreateKinesisRecord(process.env.KINESIS_TEST);
 
 export const create: Handler = (event: APIGatewayEvent, context: Context, cb: Callback) => {
     const timestamp = new Date().getTime();
